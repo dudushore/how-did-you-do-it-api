@@ -8,6 +8,9 @@ WORKDIR /app
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
 
+# IMPORTANTE: Dá permissão de execução ao script do Maven Wrapper.
+RUN chmod +x ./mvnw
+
 # Descarrega as dependências do projeto.
 RUN ./mvnw dependency:go-offline
 
@@ -19,3 +22,4 @@ RUN ./mvnw clean install
 
 # Define o comando que será executado quando o container iniciar.
 CMD ["java", "-jar", "target/api-0.0.1-SNAPSHOT.jar"]
+
