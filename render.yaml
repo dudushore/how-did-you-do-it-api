@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: how-did-you-do-it-api
+    # Define o ambiente como Java.
+    env: java
+    # Define o plano de serviço como gratuito.
+    plan: free
+    # Comandos para construir e iniciar a aplicação.
+    buildCommand: ./mvnw clean install
+    startCommand: java -jar target/api-0.0.1-SNAPSHOT.jar
+    # Variáveis de ambiente necessárias.
+    envVars:
+      - key: JAVA_VERSION
+        value: 17
+
