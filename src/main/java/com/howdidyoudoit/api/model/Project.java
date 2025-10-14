@@ -1,31 +1,46 @@
 package com.howdidyoudoit.api.model;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor      // Necessário para o JPA
-@AllArgsConstructor     // Cria o construtor com todos os argumentos
+@Table(name = "projects")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Project {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "autor_username")
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private User user;
 
+    @Column(nullable = false)
     private String titulo;
-    @Column(length = 512)
+
+    @Column(length = 255)
     private String descricaoCurta;
+
     private int salvamentos;
+
     private Long origemProjetoId;
-    @Column(length = 10000)
+
+    @Column(columnDefinition = "TEXT")
     private String historia;
 }
 
