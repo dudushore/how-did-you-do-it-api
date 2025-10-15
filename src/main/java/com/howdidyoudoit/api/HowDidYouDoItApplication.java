@@ -13,7 +13,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.util.List;
-import java.util.Optional;
 
 @SpringBootApplication
 public class HowDidYouDoItApplication {
@@ -27,12 +26,19 @@ public class HowDidYouDoItApplication {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("*"); // Permite todas as origens
+        
+        // Lista de origens permitidas
+        config.setAllowedOrigins(List.of(
+            "https://hdydi.netlify.app", // produção Netlify
+            "http://127.0.0.1:5500"      // testes locais
+        ));
+
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
+
 
     @Bean
     CommandLineRunner initDatabase(UserRepository userRepository, ProjectRepository projectRepository) {
@@ -49,7 +55,6 @@ public class HowDidYouDoItApplication {
                 Project p1 = new Project(null, user1, "Criei um Portfólio Pessoal com React e Tailwind", "Um guia passo a passo para construir um site de portfólio moderno e responsivo.", 128, null, "## A Motivação\n\nSempre quis ter um lugar para centralizar meus projetos...");
                 Project p2 = new Project(null, user2, "Horta Vertical com Garrafas PET", "Uma solução sustentável e barata para cultivar temperos em apartamentos.", 256, null, "## O Problema\n\nEu moro em um apartamento pequeno...");
                 Project p3 = new Project(null, user3, "Pão de Fermentação Natural para Iniciantes", "Como criar seu próprio fermento (levain) e assar um pão delicioso.", 432, null, "### A Jornada da Fermentação\n\nFazer pão de fermentação natural parecia um bicho de sete cabeças...");
-                
                 Project p4 = new Project(null, user1, "Horta Vertical com Irrigação Automática", "Adaptando o projeto do Beto com um toque de tecnologia usando Arduino.", 78, 2L, "## A Inspiração\n\nAdorei o projeto de **Horta Vertical com Garrafas PET** do @beto.construtor...");
                 
                 projectRepository.saveAll(List.of(p1, p2, p3, p4));
